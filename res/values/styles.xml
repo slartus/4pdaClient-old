@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance">
+        <item name="android:textColor">?textColorPrimary</item>
+        <item name="android:textColorHighlight">?android:textColorHighlight</item>
+        <item name="android:textColorHint">?android:textColorHint</item>
+        <item name="android:textColorLink">?android:textColorLink</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.Inverse">
+        <item name="android:textColor">?textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:textColorHintInverse</item>
+        <item name="android:textColorHighlight">?android:textColorHighlightInverse</item>
+        <item name="android:textColorLink">?android:textColorLinkInverse</item>
+    </style>
+
+    <style name="NotificationTitle">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NotificationText">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="cat_name">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#4373C3</item>
+        <item name="android:textSize">12dip</item>
+        <!--<item name="android:layout_marginTop">7dip</item>-->
+        <!--<item name="android:layout_marginBottom">5dp</item>-->
+        <item name="android:paddingLeft">10dp</item>
+        <!--<item name="android:paddingTop">10dp</item>-->
+        <item name="android:paddingRight">10dp</item>
+        <!--<item name="android:paddingBottom">10dp</item>-->
+        <item name="android:gravity">left|center_vertical</item>
+
+    </style>
+
+
+    <style name="tab_button">
+        <item name="android:textColor">#4373C3</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="TextAppearance_dark" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/pda__primary_text_dark</item>
+        <item name="android:textColorHighlight">@color/pda__primary_text_dark</item>
+        <item name="android:textColorHint">@color/pda__primary_text_dark</item>
+        <item name="android:textColorLink">@color/pda__primary_text_dark</item>
+    </style>
+
+    <style name="alert_dialog_style_dark" parent="@android:style/Theme.Dialog">
+        <item name="android:bottomBright">@color/pda__background_dark</item>
+        <item name="android:bottomDark">@color/pda__background_dark</item>
+        <item name="android:bottomMedium">@color/pda__background_dark</item>
+        <item name="android:centerBright">@color/pda__background_dark</item>
+        <item name="android:centerDark">@color/pda__background_dark</item>
+        <item name="android:centerMedium">@color/pda__background_dark</item>
+        <item name="android:fullBright">@color/pda__background_dark</item>
+        <item name="android:fullDark">@color/pda__background_dark</item>
+        <item name="android:topBright">@color/pda__background_dark</item>
+        <item name="android:topDark">@color/pda__background_dark</item>
+        <item name="android:textColorPrimary">@color/pda__primary_text_dark</item>
+        <item name="android:textColorSecondary">@color/pda__primary_text_dark</item>
+        <item name="android:textColor">@color/pda__primary_text_dark</item>
+        <item name="android:textAppearance">@style/TextAppearance_dark</item>
+        <item name="alertDialogTitleDividerColor">@color/holo_blue_dark</item>
+        <item name="dividerHorizontal">?android:listDivider</item>
+
+        <item name="android:textAppearance">@style/TextAppearance_dark</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance_dark</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance_dark</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance_dark</item>
+
+
+        <item name="android:windowBackground">@color/pda__background_dark</item>
+        <item name="android:colorBackground">#ff00ff00</item>
+        <item name="android:windowTitleStyle">@style/TextAppearance_dark</item>
+        <item name="alertDialogTitleDividerColor">@color/holo_blue_dark</item>
+        <item name="dividerHorizontal">?android:listDivider</item>
+    </style>
+
+    <style name="TextAppearance_light" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/pda__primary_text_light</item>
+        <item name="android:textColorHighlight">@color/pda__primary_text_light</item>
+        <item name="android:textColorHint">@color/pda__primary_text_light</item>
+        <item name="android:textColorLink">@color/pda__primary_text_light</item>
+        <item name="android:textColorPrimary">@color/pda__primary_text_light</item>
+        <item name="android:textColorSecondary">@color/pda__primary_text_light</item>
+
+    </style>
+
+    <style name="alert_dialog_style_light">
+        <item name="android:bottomBright">@color/pda__background_light</item>
+        <item name="android:bottomDark">@color/pda__background_light</item>
+        <item name="android:bottomMedium">@color/pda__background_light</item>
+        <item name="android:centerBright">@color/pda__background_light</item>
+        <item name="android:centerDark">@color/pda__background_light</item>
+        <item name="android:centerMedium">@color/pda__background_light</item>
+        <item name="android:fullBright">@color/pda__background_light</item>
+        <item name="android:fullDark">@color/pda__background_light</item>
+        <item name="android:topBright">@color/pda__background_light</item>
+        <item name="android:topDark">@color/pda__background_light</item>
+        <item name="android:textColorPrimary">@color/pda__primary_text_light</item>
+        <item name="android:textColorSecondary">@color/pda__primary_text_light</item>
+        <item name="android:textColor">@color/pda__primary_text_light</item>
+        <item name="android:textColorHint">@color/pda__primary_text_light</item>
+        <item name="android:editTextStyle">@style/TextAppearance_light</item>
+
+        <item name="android:textAppearance">@style/TextAppearance_light</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance_light</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance_light</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance_light</item>
+
+
+        <item name="android:windowBackground">@color/pda__background_light</item>
+        <item name="android:colorBackground">#ff00ff00</item>
+        <item name="android:windowTitleStyle">@style/TextAppearance_light</item>
+        <item name="alertDialogTitleDividerColor">@color/holo_blue_light</item>
+        <item name="dividerHorizontal">?android:listDivider</item>
+
+    </style>
+
+
+    <!-- =============================================================== -->
+    <!-- Black Style -->
+    <!-- =============================================================== -->
+    <dimen name="tab_margin_bl">0dip</dimen>
+    <dimen name="themes_margin_bl">0dip</dimen>
+
+    <style name="tab_background_bl">
+        <item name="android:background">@color/pda__background_dark</item>
+        <item name="android:padding">@dimen/tab_margin_bl</item>
+    </style>
+
+    <style name="pda_background_dark">
+        <item name="android:background">@color/abs__background_holo_dark</item>
+        <item name="android:padding">@dimen/themes_margin_bl</item>
+    </style>
+
+    <style name="text_theme_item_isnew_bl">
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:background">@color/pda__background_dark</item>
+    </style>
+
+    <style name="default_background_bl">
+        <item name="android:background">@color/pda__background_dark</item>
+    </style>
+
+    <style name="default_textcolor_bl">
+        <item name="android:textColor">@color/pda__primary_text_dark</item>
+    </style>
+
+    <style name="default_colors_bl">
+        <item name="android:background">@color/pda__background_dark</item>
+        <item name="android:textColor">@color/pda__primary_text_dark</item>
+    </style>
+
+    <style name="cat_name_bl">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#565656</item>
+        <item name="android:textSize">12dip</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
+    <style name="board_forum_name_bl">
+        <item name="android:textColor">#4373C3</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#000</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="devdb_group_bl">
+        <item name="android:textColor">#4373c3</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="devdb_prop_bl">
+
+    </style>
+
+    <style name="devdb_value_bl">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- =============================================================== -->
+    <!-- White Style -->
+    <!-- =============================================================== -->
+    <dimen name="tab_margin_wh">0dip</dimen>
+    <dimen name="themes_margin_wh">0dip</dimen>
+
+    <style name="tab_background_wh">
+        <item name="android:background">@color/abs__background_holo_light</item>
+        <item name="android:padding">@dimen/tab_margin_wh</item>
+    </style>
+
+    <style name="pda_background_light">
+        <item name="android:background">@color/abs__background_holo_light</item>
+        <item name="android:padding">@dimen/themes_margin_wh</item>
+    </style>
+
+    <style name="text_theme_item_isnew_wh">
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:background">@color/abs__background_holo_light</item>
+    </style>
+
+    <style name="default_background_wh">
+        <item name="android:background">@color/abs__background_holo_light</item>
+    </style>
+
+    <style name="default_textcolor_wh">
+        <item name="android:textColor">@color/pda__primary_text_light</item>
+    </style>
+
+    <style name="default_colors_wh">
+        <item name="android:background">@color/abs__background_holo_light</item>
+        <item name="android:textColor">@color/pda__primary_text_light</item>
+    </style>
+
+    <style name="cat_name_wh">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#4373C3</item>
+        <item name="android:textSize">12dip</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
+    <style name="board_forum_name_wh">
+        <item name="android:textColor">#4373C3</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="devdb_group_wh">
+        <item name="android:textColor">#4373c3</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="devdb_prop_wh">
+
+    </style>
+
+    <style name="devdb_value_wh">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Holo" parent="" />
+
+    <style name="Holo.ButtonBar" parent="Holo">
+        <item name="android:background">@null</item>
+        <item name="android:divider">?dividerVertical</item>
+
+        <item name="android:paddingBottom">0dip</item>
+        <item name="android:paddingLeft">0dip</item>
+        <item name="android:paddingRight">0dip</item>
+        <item name="android:paddingTop">0dip</item>
+
+    </style>
+
+    <style name="Holo.ButtonBar.AlertDialog" parent="Holo.ButtonBar">
+
+    </style>
+
+    <style name="TextViewStyle_Light" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/pda__primary_text_light</item>
+        <item name="android:textAppearance">@style/TextAppearance_light</item>
+    </style>
+
+    <style name="TextViewStyle_Dark" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/pda__primary_text_dark</item>
+        <item name="android:textAppearance">@style/TextAppearance_dark</item>
+    </style>
+
+    <style name="ListViewStyle_Light" parent="@android:style/Widget.ListView.White">
+        <item name="android:background">@color/pda__background_light</item>
+        <item name="android:textColor">@color/pda__primary_text_light</item>
+        <item name="android:textAppearance">@style/TextAppearance_light</item>
+        <item name="android:listSelector">@drawable/apptheme_list_selector_holo_light</item>
+    </style>
+
+    <style name="ListViewStyle_Dark" parent="@android:style/Widget.ListView">
+        <item name="android:background">@color/pda__background_dark</item>
+
+        <item name="android:textColor">@color/pda__primary_text_dark</item>
+        <item name="android:textColorPrimary">@color/pda__primary_text_dark</item>
+        <item name="android:textColorSecondary">@color/pda__secondary_text_dark</item>
+        <item name="android:textAppearance">@style/TextAppearance_dark</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance_dark</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance_dark</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance_dark</item>
+
+        <item name="android:listSelector">@drawable/apptheme_list_selector_holo_dark</item>
+    </style>
+
+    <style name="ListViewMenuStyle_Dark" parent="ListViewStyle_Dark">
+        <item name="android:cacheColorHint">@null</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fadingEdge">none</item>
+        <!-- Light background for the list in menus, so the divider for bright themes -->
+        <item name="android:divider">@android:drawable/divider_horizontal_dark</item>
+    </style>
+</resources>

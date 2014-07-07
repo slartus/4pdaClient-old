@@ -1,0 +1,78 @@
+<resources>
+
+
+    <style name="Theme.White" parent="AppTheme.Light">
+
+        <item name="android:windowBackground">@color/pda__background_light</item>
+        <item name="android:colorBackground">@color/pda__background_light</item>
+        <item name="android:windowTitleStyle">@style/default_colors_wh</item>
+        <item name="android:textColorPrimary">@color/pda__primary_text_light</item>
+        <item name="android:textColorSecondary">@color/pda__primary_text_light</item>
+        <item name="android:textColor">@color/pda__primary_text_light</item>
+        <item name="android:textColorHint">@color/pda__primary_text_light</item>
+
+
+        <item name="android:textAppearance">@style/TextAppearance_light</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance_light</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance_light</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance_light</item>
+
+
+        <item name="tabBackground">@style/tab_background_wh</item>
+        <item name="pda_background">@style/pda_background_light</item>
+        <item name="android:alertDialogStyle">@style/alert_dialog_style_light</item>
+        <item name="android:textViewStyle">@style/TextViewStyle_Light</item>
+        <item name="android:listViewStyle">@style/ListViewStyle_Light</item>
+
+        <item name="textThemeItemIsnew">@style/text_theme_item_isnew_wh</item>
+        <item name="defaultBackground">@style/default_background_wh</item>
+        <item name="defaultTextColor">@style/default_textcolor_wh</item>
+        <item name="defaultColors">@style/default_colors_wh</item>
+        <item name="forumItemSelector">@drawable/forum_item_selector_wh</item>
+        <item name="categoryName">@style/cat_name_wh</item>
+        <item name="boardForumName">@style/board_forum_name_wh</item>
+        <item name="devdb_group">@style/devdb_group_wh</item>
+        <item name="devdb_prop">@style/devdb_prop_wh</item>
+        <item name="devdb_value">@style/devdb_value_wh</item>
+    </style>
+
+    <style name="Theme.Black" parent="AppTheme">
+        <item name="android:windowBackground">@color/pda__background_dark</item>
+        <item name="android:colorBackground">@color/pda__background_dark</item>
+        <item name="android:windowTitleStyle">@style/default_colors_bl</item>
+        <item name="android:textColorPrimary">@color/pda__primary_text_dark</item>
+        <item name="android:textColorSecondary">@color/pda__secondary_text_dark</item>
+        <item name="android:textColor">@color/pda__primary_text_dark</item>
+        <item name="android:textColorHint">@color/pda__primary_text_dark</item>
+
+
+        <item name="android:textAppearance">@style/TextAppearance_dark</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance_dark</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance_dark</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance_dark</item>
+
+
+        <item name="tabBackground">@style/tab_background_bl</item>
+        <item name="pda_background">@style/pda_background_dark</item>
+        <item name="android:alertDialogStyle">@style/alert_dialog_style_dark</item>
+        <item name="android:textViewStyle">@style/TextViewStyle_Dark</item>
+        <item name="android:listViewStyle">@style/ListViewStyle_Dark</item>
+
+
+        <item name="textThemeItemIsnew">@style/text_theme_item_isnew_bl</item>
+        <item name="defaultBackground">@style/default_background_bl</item>
+        <item name="defaultTextColor">@style/default_textcolor_bl</item>
+        <item name="defaultColors">@style/default_colors_bl</item>
+        <item name="forumItemSelector">@drawable/forum_item_selector_bl</item>
+        <item name="categoryName">@style/cat_name_bl</item>
+        <item name="boardForumName">@style/board_forum_name_bl</item>
+        <item name="devdb_group">@style/devdb_group_bl</item>
+        <item name="devdb_prop">@style/devdb_prop_bl</item>
+        <item name="devdb_value">@style/devdb_value_bl</item>
+    </style>
+
+    <style name="TextAppearance.Theme.PlainText" parent="android:TextAppearance.Theme">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+</resources>

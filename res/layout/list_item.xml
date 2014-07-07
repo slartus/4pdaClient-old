@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:paddingLeft="2dip"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    android:paddingRight="5dp">
+
+    <ImageView
+        android:id="@+id/imgFlag"
+        android:layout_width="4dip"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:lines="3"
+        android:layout_marginRight="2dip"
+        android:minLines="3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/lnrTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:ellipsize="middle"
+                android:id="@+id/txtTopLeft"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Top Left Text"
+                android:singleLine="true"
+                android:textColor="#606060"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/txtTopRight"
+                android:gravity="right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Top Right Text"
+                android:textColor="#606060"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtMain"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Main Text" />
+
+        <TextView
+            android:id="@+id/txtSubMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="#969696"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Sub main text" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,4 @@
+
+    <resources>
+        <bool name="screen_small">true</bool>
+    </resources>

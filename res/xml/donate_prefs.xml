@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference android:title="QIWI"
+                android:summary="Перейти на форму выставления счета"
+                android:key="Qiwi"/>
+
+    <Preference android:title="Яндекс-кошелёк"
+                android:summary="Скопировать в буфер: 41001491859942"
+                android:key="Yandex.money"/>
+
+    <Preference android:title="WebMoney Z"
+                android:summary="Скопировать в буфер: Z188582160272"
+                android:key="WebMoney.moneyZ"/>
+
+    <Preference android:title="WebMoney R"
+                android:summary="Скопировать в буфер: R391199896701"
+                android:key="WebMoney.moneyR"/>
+
+    <Preference android:title="WebMoney U"
+                android:summary="Скопировать в буфер: U177333629317"
+                android:key="WebMoney.moneyU"/>
+
+    <Preference android:title="Paypal"
+                android:summary="Перейти на форму выставления счета"
+                android:key="Paypal.money"/>
+    <Preference android:title="Google play"
+                android:summary="Донейт через google play"
+                android:key="GooglePlay"/>
+    <!--<PreferenceScreen android:title="Денежная помощь.."-->
+                      <!--android:summary="Google-market">-->
+        <!--<Preference android:title="Поддержать разработчика"-->
+                    <!--android:summary="0.99$"-->
+                    <!--android:key="Billing.OneLevel"/>-->
+        <!--<Preference android:title="Дать разработчику на пиво"-->
+                    <!--android:summary="2.99$"-->
+                    <!--android:key="Billing.ThreeLevel"/>-->
+        <!--<Preference android:title="Улучшить настроение разработчику"-->
+                    <!--android:summary="4.99$"-->
+                    <!--android:key="Billing.FiveLevel"/>-->
+    <!--</PreferenceScreen>-->
+</PreferenceScreen>

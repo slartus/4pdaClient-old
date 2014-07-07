@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="0dip">
+
+    <ImageButton
+        android:id="@+id/btnSettins"
+        android:src="@drawable/ic_menu_preferences"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_margin="0dip"
+        android:padding="5dip"
+        android:layout_centerVertical="true" />
+
+    <EditText
+        android:id="@+id/query_edit"
+        android:paddingLeft="2dip"
+        android:singleLine="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/Keywords"
+        android:scrollHorizontally="true"
+        android:capitalize="none"
+        android:autoText="false"
+        android:layout_centerVertical="true"
+        android:imeOptions="actionSearch"
+        android:imeActionLabel="@string/Search"
+        android:layout_toLeftOf="@+id/btnSearch"
+        android:layout_toRightOf="@+id/btnSettins">
+
+        <requestFocus />
+    </EditText>
+
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_margin="0dip"
+        android:padding="5dip"
+        android:id="@+id/btnSearch"
+        android:src="@drawable/ic_menu_search"
+
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true" />
+</RelativeLayout>

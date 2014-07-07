@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:project="http://schemas.android.com/apk/res/org.softeg.slartus.forpda">
+    <PreferenceScreen android:title="Общее">
+        <Preference
+            android:key="appstyle"
+            android:title="Стиль"
+            android:summary="Выберите стиль программы">
+
+        </Preference>
+
+        <org.softeg.slartus.forpda.controls.CustomListPreference
+            android:key="theme.ScreenOrientation"
+            android:defaultValue="-1"
+            android:title="Ориентация экрана"
+            android:entries="@array/screenOrienationArray"
+            android:entryValues="@array/screenOrienationValues" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen android:title="Списки">
+        <CheckBoxPreference
+            android:key="themeslist.usechache"
+            android:defaultValue="false"
+            android:title="Кешировать списки"
+            android:summary="При старте показывать результат последней загрузки списка" />
+        <EditTextPreference
+            android:key="interface.themeslist.title.font.size"
+            android:defaultValue="13"
+            android:title="Размер шрифта в списке тем"
+            android:summary="Размер шрифта названия тем в списках закладок"
+            android:inputType="number" />
+        <CheckBoxPreference
+            android:key="themeslist.UseVolumesScroll"
+            android:defaultValue="false"
+            android:title="Скролл громкостью"
+            android:summary="Скроллить список кнопками громкости" />
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="Вкладки"
+        android:summary="Поведение, содержание вкладок">
+        <!--<CheckBoxPreference android:key="tabs.selectonstart"-->
+        <!--android:defaultValue="false"-->
+        <!--android:title="Выбор при старте"-->
+        <!--android:summary="Выбор вкладки для загрузки при старте программы"/>-->
+
+        <org.softeg.slartus.forpda.controls.CustomListPreference
+            android:key="tabs.defaulttab"
+            android:defaultValue="Tab1"
+            android:title="По умолчанию"
+            android:summary="Выберите вкладку, которая будет открываться при старте программы"
+            android:entries="@array/tabsArray"
+            android:entryValues="@array/tabsValues" />
+        <PreferenceScreen
+            android:title="Вкладка1"
+            android:key="tabs.Tab1">
+            <Preference
+                android:key="tabs.Tab1.Data"
+                android:title="Содержание"
+                android:summary="Последние" />
+            <CheckBoxPreference
+                android:key="tabs.Tab1.Visible"
+                android:defaultValue="true"
+                android:title="Показывать" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="Вкладка2"
+            android:key="tabs.Tab2">
+            <Preference
+                android:key="tabs.Tab2.Data"
+                android:title="Содержание"
+                android:summary="Форумы" />
+            <CheckBoxPreference
+                android:key="tabs.Tab2.Visible"
+                android:defaultValue="true"
+                android:title="Показывать" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="Вкладка3"
+            android:key="tabs.Tab3">
+            <Preference
+                android:key="tabs.Tab3.Data"
+                android:title="Содержание"
+                android:summary="Избранное" />
+            <CheckBoxPreference
+                android:key="tabs.Tab3.Visible"
+                android:defaultValue="true"
+                android:title="Показывать" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="Вкладка4"
+            android:key="tabs.Tab4">
+            <Preference
+                android:key="tabs.Tab4.Data"
+                android:title="Содержание"
+                android:summary="Каталог" />
+            <CheckBoxPreference
+                android:key="tabs.Tab4.Visible"
+                android:defaultValue="true"
+                android:title="Показывать" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="Вкладка5"
+            android:key="tabs.Tab5">
+            <Preference
+                android:key="tabs.Tab5.Data"
+                android:title="Содержание"
+                android:summary="Приложения" />
+            <CheckBoxPreference
+                android:key="tabs.Tab5.Visible"
+                android:defaultValue="false"
+                android:title="Показывать" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="Вкладка6"
+            android:key="tabs.Tab6">
+            <Preference
+                android:key="tabs.Tab6.Data"
+                android:title="Содержание"
+                android:summary="Форум" />
+            <CheckBoxPreference
+                android:key="tabs.Tab6.Visible"
+                android:defaultValue="false"
+                android:title="Показывать" />
+        </PreferenceScreen>
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="Системное"
+        android:summary="Лучше не трогать ;)">
+        <PreferenceScreen android:title="Cookies">
+
+            <EditTextPreference
+                android:key="cookies.path"
+                android:title="Путь к файлу cookies"
+                android:summary="По умолчанию - пусто" />
+
+            <Preference
+                android:key="cookies.path.SetSystemPath"
+                android:title="Системный"
+                android:summary="Задать системный путь" />
+
+            <Preference
+                android:key="cookies.path.SetAppPath"
+                android:title="Общая папка"
+                android:summary="Задать путь к общей папке программы на карте памяти" />
+
+            <Preference
+                android:key="cookies.delete"
+                android:title="Удалить файл cookies"
+                android:summary="Удалить файл cookies по текущему пути" />
+
+
+        </PreferenceScreen>
+
+        <org.softeg.slartus.forpda.controls.CustomListPreference
+            android:key="topics.list.offset"
+            android:defaultValue="0"
+            android:title="Смещение в списке тем"
+            android:summary="При неверном открытии тем выберите какую тему открывать"
+            android:entries="@array/listOffsetsArray"
+            android:entryValues="@array/listOffsetsValues" />
+        <CheckBoxPreference
+            android:key="system.WebviewAllowJavascriptInterface"
+            android:defaultValue="true"
+            android:title="Использовать скрипты в просмотре темы"
+            android:summary="Снимите галочку, если программа падает при вызове меню в просмотре темы" />
+        <CheckBoxPreference
+            android:key="system.WebViewScroll"
+            android:defaultValue="true"
+            android:title="Показывать скролл в браузере"
+            android:summary="Снимите галочку, если программа падает при вызове темы. Например, для Nook Simple Touch" />
+        <EditTextPreference
+            android:key="downloads.path"
+            android:title="Путь к папке загрузки файлов" />
+        <PreferenceScreen android:title="Настройка клавиш">
+            <org.softeg.slartus.forpda.controls.KeyEventEditPreference
+                android:key="keys.prevPage"
+                android:defaultValue="158"
+                android:title="Код кнопки для перехода на предыдущую страницу"
+                android:summary="Можно указать несколько через запятую" />
+            <org.softeg.slartus.forpda.controls.KeyEventEditPreference
+                android:key="keys.nextPage"
+                android:defaultValue="407"
+                android:title="Код кнопки для перехода на следующую страницу"
+                android:summary="Можно указать несколько через запятую" />
+
+            <org.softeg.slartus.forpda.controls.KeyEventEditPreference
+                android:key="keys.scrollUp"
+                android:defaultValue="24"
+                android:title="Код кнопки для прокрутки вверх"
+                android:summary="Можно указать несколько через запятую" />
+            <org.softeg.slartus.forpda.controls.KeyEventEditPreference
+                android:key="keys.scrollDown"
+                android:defaultValue="25"
+                android:title="Код кнопки для прокрутки вниз"
+                android:summary="Можно указать несколько через запятую" />
+        </PreferenceScreen>
+
+    </PreferenceScreen>
+
+    <PreferenceScreen android:title="Просмотр темы">
+        <CheckBoxPreference
+            android:key="theme.SpoilFirstPost"
+            android:defaultValue="true"
+            android:title="Прятать первый пост"
+            android:summary="Прятать первый пост страницы в спойлер" />
+
+        <CheckBoxPreference
+            android:key="theme.ConfirmSend"
+            android:defaultValue="true"
+            android:title="Подтверждать отправку"
+            android:summary="Подтверждать отправку сообщения" />
+        <org.softeg.slartus.forpda.controls.CustomListPreference
+            android:key="theme.LoadsImages"
+            android:defaultValue="1"
+            android:title="Загружать картинки"
+            android:entries="@array/ConnectTypeArray"
+            android:entryValues="@array/ConnectTypeValues" />
+
+        <!--<CheckBoxPreference android:key="theme.LoadsImagesAutomatically"-->
+        <!--android:defaultValue="true"-->
+        <!--android:title="Загружать картинки"/>-->
+
+        <CheckBoxPreference
+            android:key="theme.UseLocalEmoticons"
+            android:defaultValue="true"
+            android:title="Использовать локальные картинки"
+            android:summary="Локальные: высокая скорость, меньше траффик; Интернет: низкая скорость, больше траффик" />
+
+        <EditTextPreference
+            android:key="theme.ZoomLevel"
+            android:defaultValue="150"
+            android:title="Масштаб страницы"
+            android:summary="Масштаб страницы, %"
+            android:inputType="number" />
+        <CheckBoxPreference
+            android:key="theme.ZoomUsing"
+            android:defaultValue="true"
+            android:title="Использовать масштабирование"
+            android:summary="Возможность изменять масштаб страницы во время просмотра" />
+        <CheckBoxPreference
+            android:key="theme.UseVolumesScroll"
+            android:defaultValue="false"
+            android:title="Скролл громкостью"
+            android:summary="Скроллить страницу кнопками громкости" />
+        <CheckBoxPreference
+            android:key="theme.KeepScreenOn"
+            android:defaultValue="false"
+            android:title="Не выключать экран" />
+
+        <CheckBoxPreference
+            android:key="files.ConfirmDownload"
+            android:defaultValue="true"
+            android:title="Подтверждать загрузку файла"
+            android:summary=" Подтверждение загрузки файла при выборе ссылки" />
+        <!--<CheckBoxPreference android:key="theme.HidePostForm"-->
+        <!--android:defaultValue="false"-->
+        <!--android:title="Прятать поле ответа"-->
+        <!--android:summary="Прятать поле ответа под спойлер"/>-->
+        <CheckBoxPreference
+            android:key="theme.SpoilerByButton"
+            android:defaultValue="false"
+            android:title="Использовать кнопку для спойлеров"
+            android:summary="Если не работают спойлеры" />
+        <CheckBoxPreference
+            android:key="theme.FullScreen"
+            android:defaultValue="false"
+            android:title="Во весь экран"
+            android:summary="Просмотр темы во весь экран" />
+        <CheckBoxPreference
+            android:key="theme.BrowserStyle"
+            android:defaultValue="false"
+            android:title="Вид как в браузере"
+            android:summary="Вид темы как в браузере в мобильной версии. !Темы загружаются быстрее!" />
+
+        <org.softeg.slartus.forpda.controls.CustomListPreference
+            android:key="file.downloaderManagers"
+            android:defaultValue="0"
+            android:title="Скачивать файл при помощи.."
+            android:summary="Использовать для скачивания файлов выбранный менеджер"
+            android:entries="@array/downloaderManagersArray"
+            android:entryValues="@array/downloaderManagersValues" />
+
+        <!--<CheckBoxPreference android:key="file.downloaderManager"-->
+        <!--android:defaultValue="false"-->
+        <!--android:title="Внешний браузер"-->
+        <!--android:summary="Скачивать файлы через внешний браузер"/>-->
+
+        <!--<CheckBoxPreference android:key="EditPostPlus.FullScreen"-->
+        <!--android:defaultValue="false"-->
+        <!--android:title="FullScreen ответ"-->
+        <!--android:summary="Форма расширенного ответа во весь экран"/>-->
+    </PreferenceScreen>
+
+
+    <PreferenceScreen android:title="Новости">
+        <CheckBoxPreference
+            android:key="news.ConfirmSend"
+            android:defaultValue="true"
+            android:title="Подтверждать отправку"
+            android:summary="Подтверждать отправку сообщения" />
+        <!--<CheckBoxPreference android:key="news.LoadsImagesAutomatically"-->
+        <!--android:defaultValue="true"-->
+        <!--android:title="Загружать картинки"/>-->
+        <org.softeg.slartus.forpda.controls.CustomListPreference
+            android:key="news.LoadsImages"
+            android:defaultValue="1"
+            android:title="Загружать картинки"
+            android:entries="@array/ConnectTypeArray"
+            android:entryValues="@array/ConnectTypeValues" />
+        <EditTextPreference
+            android:key="news.ZoomLevel"
+            android:defaultValue="150"
+            android:title="Масштаб страницы"
+            android:summary="Масштаб страницы, %"
+            android:inputType="number" />
+        <CheckBoxPreference
+            android:key="news.ZoomUsing"
+            android:defaultValue="true"
+            android:title="Использовать масштабирование"
+            android:summary="Возможность изменять масштаб страницы во время просмотра" />
+        <CheckBoxPreference
+            android:key="news.UseVolumesScroll"
+            android:defaultValue="false"
+            android:title="Скролл громкостью"
+            android:summary="Скроллить страницу кнопками громкости" />
+        <CheckBoxPreference
+            android:key="news.KeepScreenOn"
+            android:defaultValue="false"
+            android:title="Не выключать экран" />
+        <CheckBoxPreference
+            android:key="news.FullScreen"
+            android:defaultValue="false"
+            android:title="Во весь экран"
+            android:summary="Просмотр новости во весь экран" />
+        <org.softeg.slartus.forpda.controls.CustomListPreference
+            android:key="news.videoplayer"
+            android:defaultValue="-1"
+            android:title="Проигрыватель видео"
+            android:entries="@array/video_player_types_titles"
+            android:entryValues="@array/video_player_types_values" />
+    </PreferenceScreen>
+
+    <PreferenceScreen android:title="Поиск">
+        <CheckBoxPreference
+            android:key="search.SaveSettings"
+            android:defaultValue="false"
+            android:title="Сохранять настройки поиска"
+            android:summary="Сохранять все выбранные настройки поиска" />
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="Оповещения"
+        android:key="notifiers.service">
+        <PreferenceScreen
+            android:title="QMS"
+            android:summary="Оповещения о новых личных сообщениях">
+            <CheckBoxPreference
+                android:key="qms.service.use"
+                android:defaultValue="false"
+                android:title="Использовать сервис"
+                android:text="textСервис проверки новых сообщений"
+                android:summary="Сервис проверки новых сообщений" />
+            <org.softeg.slartus.forpda.classes.common.ExtEditTextPreference
+                android:key="qms.service.timeout"
+                project:myInputType="numberDecimal"
+                android:inputType="numberDecimal"
+                project:defaultValue="5"
+                android:title="Таймаут проверки"
+                android:summary="Таймаут проверки новых сообщений, мин" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="Избранное"
+            android:summary="Оповещения о новых постах в избранных темах">
+            <CheckBoxPreference
+                android:key="FavoritesNotifier.service.use"
+                android:defaultValue="false"
+                android:title="Использовать сервис"
+                android:text="textСервис проверки новых сообщений"
+                android:summary="Сервис проверки новых сообщений" />
+            <org.softeg.slartus.forpda.classes.common.ExtEditTextPreference
+                android:key="FavoritesNotifier.service.timeout"
+                project:myInputType="numberDecimal"
+                android:inputType="numberDecimal"
+                project:defaultValue="5"
+                android:title="Таймаут проверки"
+                android:summary="Таймаут проверки новых постов, мин" />
+        </PreferenceScreen>
+    </PreferenceScreen>
+    <!--<PreferenceCategory android:title="Сообщения">-->
+    <!--<CheckBoxPreference android:key="posts.UsePR"-->
+    <!--android:defaultValue="false"-->
+    <!--android:title="Пиарить программу"-->
+    <!--android:summary="Добавлять 'Я использую 4pda-клиент'"/>-->
+    <!--</PreferenceCategory>-->
+    <!--<PreferenceScreen android:title="Дополнительно"-->
+    <!--android:summary="Дополнительные настройки">-->
+    <!--<EditTextPreference android:title="Путь к cookies"-->
+    <!--android:key="Additional.CookiesFile"/>-->
+    <!--</PreferenceScreen>-->
+
+    <PreferenceScreen android:title="О программе">
+        <Preference
+            android:key="About.AppVersion"
+            android:summary="Нажми меня" />
+        <Preference
+            android:title="История изменений"
+            android:key="About.History" />
+        <Preference
+            android:title="Рассказать друзьям"
+            android:key="About.ShareIt" />
+        <Preference
+            android:title="Оставить отзыв"
+            android:summary="Оставить отзыв на маркете"
+            android:key="About.SendFeedback" />
+        <Preference
+            android:title="Дать в репу"
+            android:summary="Повысить репутацию разработчика на форуме"
+            android:key="About.AddRep" />
+        <Preference
+            android:title="Открыть тему"
+            android:summary="Открыть тему обсуждения программы"
+            android:key="About.ShowTheme" />
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:title="Помочь проекту"
+        android:summary="Ваше осязаемое 'Спасибо'">
+        <Preference
+            android:title="QIWI"
+            android:summary="Перейти на форму выставления счета"
+            android:key="Qiwi" />
+
+        <Preference
+            android:title="Яндекс-кошелёк"
+            android:summary="Скопировать в буфер: 41001491859942"
+            android:key="Yandex.money" />
+
+        <Preference
+            android:title="WebMoney Z"
+            android:summary="Скопировать в буфер: Z188582160272"
+            android:key="WebMoney.moneyZ" />
+
+        <Preference
+            android:title="WebMoney R"
+            android:summary="Скопировать в буфер: R391199896701"
+            android:key="WebMoney.moneyR" />
+
+        <Preference
+            android:title="WebMoney U"
+            android:summary="Скопировать в буфер: U177333629317"
+            android:key="WebMoney.moneyU" />
+
+        <Preference
+            android:title="Paypal"
+            android:summary="Перейти на форму выставления счета"
+            android:key="Paypal.money" />
+
+        <Preference
+            android:title="Google play"
+            android:summary="Донейт через google play"
+            android:key="GooglePlay" />
+        <CheckBoxPreference
+            android:key="donate.DontShow"
+            android:defaultValue="false"
+            android:title="Не показывать сообщение"
+            android:summary="Не показывать для каждой новой версии сообщение о донейте" />
+        <!--<PreferenceScreen android:title="Денежная помощь.."-->
+        <!--android:summary="Google-market">-->
+        <!--<Preference android:title="Поддержать разработчика"-->
+        <!--android:summary="0.99$"-->
+        <!--android:key="Billing.OneLevel"/>-->
+        <!--<Preference android:title="Дать разработчику на пиво"-->
+        <!--android:summary="2.99$"-->
+        <!--android:key="Billing.ThreeLevel"/>-->
+        <!--<Preference android:title="Улучшить настроение разработчику"-->
+        <!--android:summary="4.99$"-->
+        <!--android:key="Billing.FiveLevel"/>-->
+        <!--</PreferenceScreen>-->
+    </PreferenceScreen>
+</PreferenceScreen>

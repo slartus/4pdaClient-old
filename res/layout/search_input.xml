@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="5dip">
+
+    <EditText
+        android:id="@+id/query_edit"
+        android:singleLine="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:hint="@string/Keyword"
+        android:scrollHorizontally="true"
+        android:capitalize="none"
+        android:autoText="false"
+        android:layout_centerVertical="true"
+        android:imeOptions="actionSearch"
+        android:imeActionLabel="@string/Search">
+
+        <requestFocus />
+    </EditText>
+</LinearLayout>
