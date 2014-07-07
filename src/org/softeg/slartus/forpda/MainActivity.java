@@ -33,7 +33,7 @@ import org.softeg.slartus.forpda.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpda.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpda.common.Log;
 import org.softeg.slartus.forpda.mainnotifiers.DonateNotifier;
-import org.softeg.slartus.forpda.mainnotifiers.MarketVersionNotifier;
+import org.softeg.slartus.forpda.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpda.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpda.prefs.PreferencesActivity;
 import org.softeg.slartus.forpda.topicview.ThemeActivity;
@@ -94,8 +94,9 @@ public class MainActivity extends BaseFragmentActivity {
 
             createTabHost(saveInstance);
             new DonateNotifier().start(this);
-            new MarketVersionNotifier(14).start(this);
+            //new MarketVersionNotifier(14).start(this);
             new TopicAttentionNotifier().start(this);
+            new ForPdaVersionNotifier(1).start(this);
         } catch (Throwable ex) {
             Log.e(getApplicationContext(), ex);
         }
