@@ -562,7 +562,7 @@ public class IntentActivity extends Activity {
         return false;
     }
 
-    private static boolean tryShowFile(final Activity activity, final String url, final Boolean finish) {
+    public static boolean tryShowFile(final Activity activity, final String url, final Boolean finish) {
         Pattern filePattern = PatternExtensions.compile("http://4pda.ru/forum/dl/post/\\d+/[^\"]*");
         Pattern stFilePattern = PatternExtensions.compile("http://st.4pda.ru/wp-content/uploads/[^\"]*");
         final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");

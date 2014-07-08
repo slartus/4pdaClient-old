@@ -2,6 +2,7 @@ package org.softeg.slartus.forpda.mainnotifiers;/*
  * Created by slinkin on 03.07.2014.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
@@ -9,9 +10,9 @@ import android.text.Html;
 import android.text.TextUtils;
 
 import org.json.JSONObject;
+import org.softeg.slartus.forpda.IntentActivity;
 import org.softeg.slartus.forpda.MyApp;
 import org.softeg.slartus.forpda.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpda.classes.common.ExtUrl;
 import org.softeg.slartus.forpda.common.Log;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
@@ -59,7 +60,8 @@ public class ForPdaVersionNotifier extends MainNotifier {
 
                     releaseVer = version.replace("beta", ".").trim();
                     siteVersionsNewer = isSiteVersionsNewer(releaseVer, currentVersion);
-                    if (siteVersionsNewer) {
+                    if (siteVersionsNewer)
+                    {
                         final String finalReleaseVer = releaseVer;
                         handler.post(new Runnable() {
                             public void run() {
@@ -73,13 +75,13 @@ public class ForPdaVersionNotifier extends MainNotifier {
                                                 public void onClick(DialogInterface dialogInterface, int i) {
                                                     dialogInterface.dismiss();
                                                     try {
-                                                        ExtUrl.showInBrowser(context, apk);
+                                                        IntentActivity.tryShowFile((Activity)context,apk,false);
                                                     } catch (Throwable ex) {
                                                         Log.e(context, ex);
                                                     }
                                                 }
                                             })
-                                            .setNegativeButton("Отмена", null)
+                                            .setNegativeButton("Закрыть", null)
                                             .create().show();
 
                                 } catch (Exception ex) {
