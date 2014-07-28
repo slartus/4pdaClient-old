@@ -161,6 +161,7 @@ public class NoteActivity extends BaseFragmentActivity {
         TableRow row = new TableRow(this);
 
         TextView textView = createStyledTextView();
+        textView.setPadding(2,2,2,2);
         textView.setText(title);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         row.addView(textView, textviewparams);
@@ -169,6 +170,7 @@ public class NoteActivity extends BaseFragmentActivity {
         row = new TableRow(this);
 
         TextView textView2 = createStyledTextView();
+        textView2.setPadding(2,2,2,2);
         textView2.setText(Html.fromHtml(text));
         textView2.setEllipsize(null);
         textView2.setOnClickListener(new View.OnClickListener() {

@@ -196,16 +196,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
             }
         });
 
-        findPreference("About.SendFeedback").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                Intent marketIntent = new Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("http://market.android.com/details?id=" + getPackageName()));
-                PreferencesActivity.this.startActivity(marketIntent);
-                return true;
-            }
-        });
-
         findPreference("About.AddRep").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 if (!Client.getInstance().getLogined()) {

@@ -88,33 +88,5 @@ public class DonateActivity extends SherlockPreferenceActivity {
             }
         });
 
-        activity.findPreference("GooglePlay").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent(activity, DonateMarketActivity.class);
-                activity.startActivity(intent);
-                return true;
-            }
-        });
-
-//        activity.findPreference("Billing.OneLevel").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            public boolean onPreferenceClick(Preference preference) {
-//                activity.requestPurchase("hcm8ljuyn47odel50kquup2oqx4p6wvj");
-//                return true;
-//            }
-//        });
-//
-//        activity.findPreference("Billing.ThreeLevel").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            public boolean onPreferenceClick(Preference preference) {
-//                activity.requestPurchase("vlqddh090c8pwyorh5x1s03c3j0phewd");
-//                return true;
-//            }
-//        });
-//
-//        activity.findPreference("Billing.FiveLevel").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            public boolean onPreferenceClick(Preference preference) {
-//                activity.requestPurchase("laf8wrotli3juv3uowdky310qdmkgrri");
-//                return true;
-//            }
-//        });
     }
 }

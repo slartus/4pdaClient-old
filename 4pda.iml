@@ -17,9 +17,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="apache" level="project" />
-    <orderEntry type="module" module-name="AndroidBillingLibrary" />
     <orderEntry type="module" module-name="FileExplorer" />
-    <orderEntry type="module" module-name="QuickActions" />
     <orderEntry type="module" module-name="SqliteHelper" />
     <orderEntry type="module" module-name="4pdaApi" />
     <orderEntry type="module" module-name="4pdaCommon" />

@@ -413,10 +413,6 @@
             android:title="Рассказать друзьям"
             android:key="About.ShareIt" />
         <Preference
-            android:title="Оставить отзыв"
-            android:summary="Оставить отзыв на маркете"
-            android:key="About.SendFeedback" />
-        <Preference
             android:title="Дать в репу"
             android:summary="Повысить репутацию разработчика на форуме"
             android:key="About.AddRep" />
@@ -457,27 +453,11 @@
             android:title="Paypal"
             android:summary="Перейти на форму выставления счета"
             android:key="Paypal.money" />
-
-        <Preference
-            android:title="Google play"
-            android:summary="Донейт через google play"
-            android:key="GooglePlay" />
         <CheckBoxPreference
             android:key="donate.DontShow"
             android:defaultValue="false"
             android:title="Не показывать сообщение"
             android:summary="Не показывать для каждой новой версии сообщение о донейте" />
-        <!--<PreferenceScreen android:title="Денежная помощь.."-->
-        <!--android:summary="Google-market">-->
-        <!--<Preference android:title="Поддержать разработчика"-->
-        <!--android:summary="0.99$"-->
-        <!--android:key="Billing.OneLevel"/>-->
-        <!--<Preference android:title="Дать разработчику на пиво"-->
-        <!--android:summary="2.99$"-->
-        <!--android:key="Billing.ThreeLevel"/>-->
-        <!--<Preference android:title="Улучшить настроение разработчику"-->
-        <!--android:summary="4.99$"-->
-        <!--android:key="Billing.FiveLevel"/>-->
-        <!--</PreferenceScreen>-->
+
     </PreferenceScreen>
 </PreferenceScreen>

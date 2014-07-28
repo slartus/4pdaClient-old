@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpda;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -11,6 +12,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -47,21 +49,18 @@ import org.softeg.slartus.forpda.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpda.classes.AppProgressDialog;
 import org.softeg.slartus.forpda.classes.BbCodesPanel;
 import org.softeg.slartus.forpda.classes.ExtTopic;
-import org.softeg.slartus.forpda.common.HtmlUtils;
 import org.softeg.slartus.forpda.common.Log;
 import org.softeg.slartus.forpda.emotic.SmilesBbCodePanel;
 import org.softeg.slartus.forpda.topicview.ThemeActivity;
-import org.softeg.slartus.forpdaapi.Post;
 import org.softeg.slartus.forpdaapi.ProgressState;
+import org.softeg.slartus.forpdaapi.post.EditAttach;
+import org.softeg.slartus.forpdaapi.post.EditPost;
+import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdacommon.FileUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * User: slinkin
@@ -75,14 +74,12 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
     private ToggleButton tglEnableEmo, tglEnableSig;
     private Button btnAttachments;
     private ProgressBar progress_search;
-    private String forumId;
+
     private String m_AttachFilePath;
     private String lastSelectDirPath = Environment.getExternalStorageDirectory().getPath();
-    private String themeId;
-    private String postId;
 
-    private String authKey;
-    private String attachPostKey;
+    private EditPost m_EditPost;
+
     final Handler uiHandler = new Handler();
     // подтверждение отправки
     private Boolean m_ConfirmSend = true;
@@ -91,8 +88,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
     private Boolean m_EnableEmo = true;
     private final int REQUEST_SAVE = 0;
     private final int REQUEST_SAVE_IMAGE = 1;
-    private MenuFragment mFragment1;
-    private String postText;
+
     private View m_BottomPanel;
 
     public static void editPost(Context context, String forumId, String topicId, String postId, String authKey) {
@@ -137,13 +133,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        //getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-
-//        setTheme(MyApp.getInstance().getThemeStyleResID());
         setContentView(R.layout.edit_post_plus);
-
-//        if (getResources().getBoolean(R.bool.screen_small))
-//            getSupportActionBar().hide();
 
         progress_search = (ProgressBar) findViewById(R.id.progress_search);
         lastSelectDirPath = prefs.getString("EditPost.AttachDirPath", lastSelectDirPath);
@@ -176,25 +166,37 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
         try {
             Intent intent = getIntent();
+
+
+            String forumId = intent.getExtras().getString("forumId");
+            String topicId = intent.getExtras().getString("themeId");
+            String postId = intent.getExtras().getString("postId");
+            String authKey = intent.getExtras().getString("authKey");
+            m_EditPost = new EditPost();
+            m_EditPost.setId(postId);
+            m_EditPost.setForumId(forumId);
+            m_EditPost.setTopicId(topicId);
+            m_EditPost.setAuthKey(authKey);
+
+
             setDataFromExtras(intent.getExtras());
+
+            startLoadPost(forumId, topicId, postId, authKey);
         } catch (Throwable ex) {
             Log.e(this, ex);
+            finish();
         }
-
         createActionMenu();
 
-        startLoadPost();
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString("forumId", forumId);
+        if (m_EditPost != null)
+            outState.putSerializable("EditPost", m_EditPost);
         outState.putString("m_AttachFilePath", m_AttachFilePath);
         outState.putString("lastSelectDirPath", lastSelectDirPath);
-        outState.putString("themeId", themeId);
-        outState.putString("postId", postId);
-        outState.putString("authKey", authKey);
-        outState.putString("attachPostKey", attachPostKey);
         outState.putString("postText", txtPost.getText().toString());
         outState.putString("txtpost_edit_reason", txtpost_edit_reason.getText().toString());
         outState.putBoolean("Enablesig", tglEnableSig.isChecked());
@@ -204,13 +206,11 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        forumId = savedInstanceState.getString("forumId");
+        if (savedInstanceState == null) return;
+        if (savedInstanceState.containsKey("EditPost"))
+            m_EditPost = (EditPost) savedInstanceState.getSerializable("EditPost");
         m_AttachFilePath = savedInstanceState.getString("m_AttachFilePath");
         lastSelectDirPath = savedInstanceState.getString("lastSelectDirPath");
-        themeId = savedInstanceState.getString("themeId");
-        postId = savedInstanceState.getString("postId");
-        authKey = savedInstanceState.getString("authKey");
-        attachPostKey = savedInstanceState.getString("attachPostKey");
         txtPost.setText(savedInstanceState.getString("postText"));
         txtpost_edit_reason.setText(savedInstanceState.getString("txtpost_edit_reason"));
         tglEnableSig.setChecked(savedInstanceState.getBoolean("Enablesig"));
@@ -219,10 +219,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
     }
 
     private void setDataFromExtras(Bundle extras) {
-        forumId = extras.getString("forumId");
-        themeId = extras.getString("themeId");
-        postId = extras.getString("postId");
-        authKey = extras.getString("authKey");
+
 
         if (extras.containsKey(Intent.EXTRA_STREAM)) {
             Uri uri = (Uri) extras.get(Intent.EXTRA_STREAM);
@@ -231,7 +228,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
         if (extras.containsKey(Intent.EXTRA_TEXT))
             txtPost.setText(extras.get(Intent.EXTRA_TEXT).toString());
-        if (extras.containsKey(Intent.EXTRA_HTML_TEXT))
+        if (Build.VERSION.SDK_INT >= 16 && extras.containsKey(Intent.EXTRA_HTML_TEXT))
             txtPost.setText(extras.get(Intent.EXTRA_HTML_TEXT).toString());
 
         if (isNewPost()) {
@@ -244,7 +241,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
     private void createActionMenu() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        mFragment1 = (MenuFragment) fm.findFragmentByTag("f1");
+        MenuFragment mFragment1 = (MenuFragment) fm.findFragmentByTag("f1");
         if (mFragment1 == null) {
             mFragment1 = new MenuFragment();
             ft.add(mFragment1, "f1");
@@ -252,62 +249,18 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
         ft.commit();
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        menu.add("Отправить")
-//                .setIcon(android.R.drawable.ic_menu_send)
-//                .setOnMenuItemClickListener(new android.view.MenuItem.OnMenuItemClickListener() {
-//
-//                    public boolean onMenuItemClick(android.view.MenuItem item) {
-//
-//                        final String body = getPostText();
-//                        if (TextUtils.isEmpty(body))
-//                            return true;
-//
-//                        if (getConfirmSend()) {
-//                            new AlertDialogBuilder(EditPostPlusActivity.this)
-//                                    .setTitle("Уверены?")
-//                                    .setMessage("Подтвердите отправку")
-//                                    .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-//                                        public void onClick(DialogInterface dialogInterface, int i) {
-//                                            dialogInterface.dismiss();
-//                                            sendPost(body);
-//
-//                                        }
-//                                    })
-//                                    .setNegativeButton("Отмена", null)
-//                                    .create().show();
-//                        } else {
-//                            sendPost(body);
-//                        }
-//
-//                        return true;
-//                    }
-//                });
-//
-//
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
     private Boolean isNewPost() {
-        return postId.equals("-1");
+        return PostApi.NEW_POST_ID.equals(m_EditPost.getId());
     }
 
     private Dialog mAttachesListDialog;
 
     private void showAttachesListDialog() {
-//        if (attaches.size() == 0) {
-//            Toast.makeText(this, "Ни одного файла не загружено", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-        String[] caps = new String[attaches.size()];
-        int i = 0;
-        for (Attach attach : attaches) {
-            caps[i++] = attach.getName();
+        if (m_EditPost.getAttaches().size() == 0) {
+            startAddAttachment();
+            return;
         }
-        AttachesAdapter adapter = new AttachesAdapter(attaches, this);
-        //  ListAdapter adapter = new ArrayAdapter<Attach>(this, R.layout.attachment_spinner_item, attaches);
+        AttachesAdapter adapter = new AttachesAdapter(m_EditPost.getAttaches(), this);
         mAttachesListDialog = new AlertDialogBuilder(this)
                 .setCancelable(true)
                 .setTitle("Вложения")
@@ -328,12 +281,6 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
     }
 
     private void startAddAttachment() {
-//        if (TextUtils.isEmpty(txtPost.getText().toString())) {
-//            Toast.makeText(EditPostPlusActivity.this, "Вы должны ввести сообщение", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-
-
         CharSequence[] items = new CharSequence[]{"Файл", "Изображение"};
         new AlertDialogBuilder(EditPostPlusActivity.this)
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
@@ -353,11 +300,6 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
                                 } catch (Exception ex) {
                                     Log.e(EditPostPlusActivity.this, ex);
                                 }
-
-//                                Intent intent = new Intent(EditPostPlusActivity.this.getBaseContext(),
-//                                        FileDialog.class);
-//                                intent.putExtra(FileDialog.START_PATH, lastSelectDirPath);
-//                                EditPostPlusActivity.this.startActivityForResult(intent, REQUEST_SAVE);
                                 break;
                             case 1:// Изображение
                                 try {
@@ -381,9 +323,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             if (resultCode == RESULT_OK) {
-                String postText = TextUtils.isEmpty(txtPost.getText()) ? TEMP_EMPTY_TEXT : txtPost.getText().toString();
                 if (requestCode == REQUEST_SAVE) {
-//                    m_AttachFilePath = data.getStringExtra(FileDialog.RESULT_PATH);
 
                     m_AttachFilePath = getRealPathFromURI(data.getData());
 
@@ -392,7 +332,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
                     m_Enablesig = tglEnableSig.isChecked();
                     m_EnableEmo = tglEnableEmo.isChecked();
-                    new UpdateTask(EditPostPlusActivity.this).execute(postText, txtpost_edit_reason.getText().toString());
+                    new UpdateTask(EditPostPlusActivity.this, m_AttachFilePath).execute();
                 } else if (requestCode == REQUEST_SAVE_IMAGE) {
 
                     Uri selectedImage = data.getData();
@@ -402,7 +342,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
                     m_Enablesig = tglEnableSig.isChecked();
                     m_EnableEmo = tglEnableEmo.isChecked();
-                    new UpdateTask(EditPostPlusActivity.this).execute(postText, txtpost_edit_reason.getText().toString());
+                    new UpdateTask(EditPostPlusActivity.this, m_AttachFilePath).execute();
                 }
             }
         } catch (Exception ex) {
@@ -436,94 +376,27 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
         editor.commit();
     }
 
-    private void startLoadPost() {
-        new LoadTask(this).execute();
+    private void startLoadPost(String forumId, String topicId, String postId, String authKey) {
+        new LoadTask(this, forumId, topicId, postId, authKey).execute();
     }
 
     private void sendPost(final String text, String editPostReason) {
         m_Enablesig = tglEnableSig.isChecked();
         m_EnableEmo = tglEnableEmo.isChecked();
         if (isNewPost()) {
-            new PostTask(EditPostPlusActivity.this).execute(text, editPostReason);
+            new PostTask(this, text, editPostReason,
+                    m_EnableEmo, m_Enablesig)
+                    .execute();
         } else {
-            new AcceptEditTask(EditPostPlusActivity.this).execute(text, editPostReason);
+            new AcceptEditTask(EditPostPlusActivity.this, text, editPostReason, m_EnableEmo, m_Enablesig).execute();
         }
     }
 
-    private void parsePody(String body) {
-        String startFlag = "<textarea name=\"Post\" rows=\"8\" cols=\"150\" style=\"width:98%; height:160px\" tabindex=\"0\">";
-        int startIndex = body.indexOf(startFlag);
-        startIndex += startFlag.length();
-        int endIndex = body.indexOf("</textarea>", startIndex);
 
-        if (TextUtils.isEmpty(txtPost.getText().toString()))
-            txtPost.setText(HtmlUtils.modifyHtmlQuote(body.substring(startIndex, endIndex)));
-
-        EditPostPlusActivity.this.attachPostKey = null;
-        Matcher m = Pattern.compile("name='attach_post_key' value='(.*?)'").matcher(body);
-        if (m.find()) {
-            EditPostPlusActivity.this.attachPostKey = m.group(1);
-        }
-
-        txtpost_edit_reason.setText(null);
-        m = Pattern.compile("name=('|\")post_edit_reason('|\") value=('|\")(.*?)('|\")").matcher(body);
-        if (m.find()) {
-            txtpost_edit_reason.setText(m.group(4));
-            if (!TextUtils.isEmpty(m.group(4)))
-                txtpost_edit_reason.setVisibility(View.VISIBLE);
-        }
-        parseAttaches(body);
-    }
-
-    private Attaches attaches = new Attaches();
-
-    private void parseAttaches(String body) {
-        Pattern pattern = Pattern.compile("onclick=\"insText\\('\\[attachment=(\\d+):(.*?)\\]'\\)");
-        Pattern attachBodyPattern = Pattern.compile("<!-- ATTACH -->([\\s\\S]*?)</i>", Pattern.MULTILINE);
-        Matcher m = attachBodyPattern.matcher(body);
-        attaches = new Attaches();
-        if (m.find()) {
-            Matcher m1 = pattern.matcher(m.group(1));
-            while (m1.find()) {
-                attaches.add(new Attach(m1.group(1), m1.group(2)));
-            }
-        } else {
-            Pattern checkPattern = Pattern.compile("\t\t<h4>Причина:</h4>\n" +
-                    "\n" +
-                    "\t\t<p>(.*?)</p>", Pattern.MULTILINE);
-            m = checkPattern.matcher(body);
-            if (m.find()) {
-                Toast.makeText(this, m.group(1), Toast.LENGTH_LONG).show();
-            }
-        }
-        btnAttachments.setText(attaches.size() + "");
-
-    }
 
     public void toggleEditReasonDialog() {
         txtpost_edit_reason.setVisibility(txtpost_edit_reason.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
-//    public void showEditReasonDialog(){
-//        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        final View layout = inflater.inflate(R.layout.edit_text_dialog, null);
-//
-//        final AlertDialog dialog = new AlertDialogBuilder(this)
-//                .setTitle("Причина редактирования")
-//                .setView(layout)
-//                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        post_edit_reason= ((EditText) layout.findViewById(org.softeg.slartus.forpda.R.id.text)).getText().toString();
-//                        dialogInterface.dismiss();
-//                    }
-//                })
-//                .setNegativeButton("Отмена", null)
-//                .setCancelable(true)
-//                .create();
-//
-//        ((EditText)layout.findViewById(org.softeg.slartus.forpda.R.id.text)).setText(post_edit_reason);
-//        dialog.show();
-//    }
 
     public String getPostText() {
         return txtPost.getText().toString();
@@ -537,22 +410,22 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
         return m_ConfirmSend;
     }
 
-
-    private static final String TEMP_EMPTY_TEXT = "<temptext>";
-
     private class UpdateTask extends AsyncTask<String, Integer, Boolean> {
-
-
         private final ProgressDialog dialog;
         private ProgressState m_ProgressState;
+        private String newAttachFilePath;
 
         public UpdateTask(Context context) {
-
             dialog = new AppProgressDialog(context);
-
         }
 
-        String body = null;
+        public UpdateTask(Context context, String newAttachFilePath) {
+            this(context);
+            this.newAttachFilePath = newAttachFilePath;
+        }
+
+
+        private EditAttach editAttach;
 
         @Override
         protected Boolean doInBackground(String... params) {
@@ -563,13 +436,9 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
                         publishProgress(percents);
                     }
                 };
-                String postBody = params[0];
-                if (TextUtils.isEmpty(postBody))
-                    postBody = TEMP_EMPTY_TEXT;
-                String post_edit_reason = params.length > 1 ? params[1] : "";
-                body = Client.getInstance().attachFilePost(forumId, themeId, authKey, attachPostKey,
-                        postId, m_Enablesig, m_EnableEmo, postBody, m_AttachFilePath, attaches.getFileList(),
-                        m_ProgressState, post_edit_reason);
+                editAttach = PostApi.attachFile(Client.getInstance(),
+                        m_EditPost.getId(), newAttachFilePath, m_ProgressState);
+
                 return true;
             } catch (Throwable e) {
                 ex = e;
@@ -610,8 +479,9 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
                 this.dialog.dismiss();
             }
 
-            if (success || (isCancelled() && body != null)) {
-                parseAttaches(body);
+            if (success || (isCancelled() && editAttach != null)) {
+                m_EditPost.addAttach(editAttach);
+                refreshAttachmentsInfo();
             } else {
                 if (ex != null)
                     Log.e(EditPostPlusActivity.this, ex);
@@ -621,11 +491,13 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
             }
         }
 
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
         protected void onCancelled(Boolean success) {
             super.onCancelled(success);
-            if (success || (isCancelled() && body != null)) {
-                parseAttaches(body);
+            if (success || (isCancelled() && editAttach != null)) {
+                m_EditPost.addAttach(editAttach);
+                refreshAttachmentsInfo();
             } else {
                 if (ex != null)
                     Log.e(EditPostPlusActivity.this, ex);
@@ -638,24 +510,21 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
     }
 
     private class DeleteTask extends AsyncTask<String, Void, Boolean> {
-
-
         private final ProgressDialog dialog;
 
-        public DeleteTask(Context context) {
+        private String attachId;
+
+        public DeleteTask(Context context, String attachId) {
+
+            this.attachId = attachId;
 
             dialog = new AppProgressDialog(context);
         }
 
-        String body;
-
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                String post_edit_reason = params.length > 1 ? params[1] : "";
-                body = Client.getInstance().deleteAttachFilePost(forumId, themeId, authKey, postId, m_Enablesig, m_EnableEmo,
-                        params[0],
-                        m_AttachFilePath, attaches.getFileList(), post_edit_reason);
+                PostApi.deleteAttachedFile(Client.getInstance(), m_EditPost.getId(), attachId);
                 return true;
             } catch (Exception e) {
                 ex = e;
@@ -678,8 +547,8 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
             }
 
             if (success) {
-                parseAttaches(body);
-
+                m_EditPost.deleteAttach(attachId);
+                refreshAttachmentsInfo();
             } else {
                 if (ex != null)
                     Log.e(EditPostPlusActivity.this, ex);
@@ -692,21 +561,27 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
     }
 
     private class AcceptEditTask extends AsyncTask<String, Void, Boolean> {
-
-
         private final ProgressDialog dialog;
+        private String postBody;
+        private String postEditReason;
+        private Boolean enableEmo;
+        private Boolean enableSign;
 
-        public AcceptEditTask(Context context) {
-
+        public AcceptEditTask(Context context,
+                              String postBody, String postEditReason, Boolean enableEmo, Boolean enableSign) {
+            this.postBody = postBody;
+            this.postEditReason = postEditReason;
+            this.enableEmo = enableEmo;
+            this.enableSign = enableSign;
             dialog = new AppProgressDialog(context);
         }
+
 
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                String post_edit_reason = params.length > 1 ? params[1] : "";
-                Client.getInstance().editPost(forumId, themeId, authKey, postId, m_Enablesig, m_EnableEmo,
-                        params[0], attaches.getFileList(), post_edit_reason);
+                PostApi.sendPost(Client.getInstance(), m_EditPost.getParams(), postBody,
+                        postEditReason, enableSign, enableEmo);
                 return true;
             } catch (Exception e) {
 
@@ -730,10 +605,10 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
             }
 
             if (success) {
-                ThemeActivity.s_ThemeId = themeId;
-                ThemeActivity.s_Params = "view=findpost&p=" + postId;
+                ThemeActivity.s_ThemeId = m_EditPost.getTopicId();
+                ThemeActivity.s_Params = "view=findpost&p=" + m_EditPost.getId();
                 if (!ThemeActivity.class.toString().equals(getIntent().getExtras().get(BaseActivity.SENDER_ACTIVITY))) {
-                    ExtTopic.showActivity(EditPostPlusActivity.this, themeId, ThemeActivity.s_Params);
+                    ExtTopic.showActivity(EditPostPlusActivity.this, m_EditPost.getTopicId(), ThemeActivity.s_Params);
                 }
                 finish();
 
@@ -749,10 +624,30 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
     }
 
+    private void setEditPost(EditPost editPost) {
+        m_EditPost = editPost;
+        txtPost.setText(m_EditPost.getBody());
+        txtpost_edit_reason.setText(m_EditPost.getPostEditReason());
+        refreshAttachmentsInfo();
+    }
+
+    private void refreshAttachmentsInfo() {
+        btnAttachments.setText(m_EditPost.getAttaches().size() + "");
+    }
+
     private class LoadTask extends AsyncTask<String, Void, Boolean> {
         private final ProgressDialog dialog;
 
-        public LoadTask(Context context) {
+        private String forumId;
+        private String topicId;
+        private String postId;
+        private String authKey;
+
+        public LoadTask(Context context, String forumId, String topicId, String postId, String authKey) {
+            this.forumId = forumId;
+            this.topicId = topicId;
+            this.postId = postId;
+            this.authKey = authKey;
             dialog = new AppProgressDialog(context);
             dialog.setCancelable(true);
             dialog.setCanceledOnTouchOutside(false);
@@ -764,17 +659,13 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
             });
         }
 
-        String body = null;
+        private EditPost editPost;
 
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                Map<String, String> outParams = new HashMap<String, String>();
-                body = Client.getInstance().getEditPostPlus(forumId, themeId, postId, authKey, outParams);
-                if (outParams.size() > 0) {
-                    forumId = outParams.get("forumId");
-                    authKey = outParams.get("authKey");
-                }
+                editPost = PostApi.editPost(Client.getInstance(), forumId, topicId, postId, authKey);
+
                 return true;
             } catch (Throwable e) {
 
@@ -794,7 +685,6 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
         protected void onCancelled() {
             Toast.makeText(EditPostPlusActivity.this, "Отменено", Toast.LENGTH_SHORT).show();
             finish();
-            return;
         }
 
         // can use UI thread here
@@ -804,13 +694,13 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
             }
 
             if (success) {
-                parsePody(body);
+                setEditPost(editPost);
                 if (!TextUtils.isEmpty(m_AttachFilePath)) {
                     saveAttachDirPath();
 
                     m_Enablesig = tglEnableSig.isChecked();
                     m_EnableEmo = tglEnableEmo.isChecked();
-                    new UpdateTask(EditPostPlusActivity.this).execute("");
+                    new UpdateTask(EditPostPlusActivity.this, m_AttachFilePath).execute("");
                 }
 
             } else {
@@ -828,11 +718,19 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
 
         private final ProgressDialog dialog;
-        private String mPostResult = null;
+        private String mPostResult = null;// при удачной отправке страница топика
         private String mError = null;
+        private String postBody;
+        private String postEditReason;
+        private Boolean enableEmo;
+        private Boolean enableSign;
 
-        public PostTask(Context context) {
-
+        public PostTask(Context context,
+                        String postBody, String postEditReason, Boolean enableEmo, Boolean enableSign) {
+            this.postBody = postBody;
+            this.postEditReason = postEditReason;
+            this.enableEmo = enableEmo;
+            this.enableSign = enableSign;
             dialog = new AppProgressDialog(context);
         }
 
@@ -840,10 +738,10 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                mPostResult = Client.getInstance().reply(forumId, themeId, authKey, attachPostKey,
-                        params[0], m_Enablesig, m_EnableEmo, false, attaches.getFileList());
+                mPostResult = PostApi.sendPost(Client.getInstance(), m_EditPost.getParams(), postBody,
+                        postEditReason, enableSign, enableEmo);
 
-                mError = Post.checkPostErrors(mPostResult);
+                mError = PostApi.checkPostErrors(mPostResult);
                 return true;
             } catch (Exception e) {
 
@@ -875,11 +773,11 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
                 if (isNewPost())
                     ThemeActivity.s_Params = "view=getlastpost";
                 else
-                    ThemeActivity.s_Params = "view=findpost&p=" + postId;
+                    ThemeActivity.s_Params = "view=findpost&p=" + m_EditPost.getId();
 
 
                 if (!ThemeActivity.class.toString().equals(getIntent().getExtras().get(BaseActivity.SENDER_ACTIVITY))) {
-                    ExtTopic.showActivity(EditPostPlusActivity.this, themeId, ThemeActivity.s_Params);
+                    ExtTopic.showActivity(EditPostPlusActivity.this, m_EditPost.getTopicId(), ThemeActivity.s_Params);
                 }
                 finish();
             } else {
@@ -896,9 +794,9 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
     public class AttachesAdapter extends BaseAdapter {
         private Activity activity;
-        private final ArrayList<Attach> content;
+        private final List<EditAttach> content;
 
-        public AttachesAdapter(ArrayList<Attach> content, Activity activity) {
+        public AttachesAdapter(List<EditAttach> content, Activity activity) {
             super();
             this.content = content;
             this.activity = activity;
@@ -908,7 +806,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
             return content.size();
         }
 
-        public Attach getItem(int i) {
+        public EditAttach getItem(int i) {
             return content.get(i);
         }
 
@@ -916,9 +814,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
             return i;
         }
 
-
         public View getView(final int position, View convertView, ViewGroup parent) {
-
             final ViewHolder holder;
 
             if (convertView == null) {
@@ -930,15 +826,18 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
                 holder = new ViewHolder();
 
 
+                assert convertView != null;
                 holder.btnDelete = (ImageButton) convertView
                         .findViewById(R.id.btnDelete);
                 holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
                         mAttachesListDialog.dismiss();
 
-                        Attach attach = (Attach) view.getTag();
-                        m_AttachFilePath = attach.getId();
-                        new DeleteTask(EditPostPlusActivity.this).execute(txtPost.getText().toString(), txtpost_edit_reason.getText().toString());
+                        EditAttach attach = (EditAttach) view.getTag();
+
+                        new DeleteTask(EditPostPlusActivity.this,
+                                attach.getId())
+                                .execute();
                     }
                 });
 
@@ -951,8 +850,9 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
                         int selectionStart = txtPost.getSelectionStart();
                         if (selectionStart == -1)
                             selectionStart = 0;
-                        Attach attach = (Attach) view.getTag();
-                        txtPost.getText().insert(selectionStart, "[spoiler][attachment=" + attach.getId() + ":" + attach.getName() + "][/spoiler]");
+                        EditAttach attach = (EditAttach) view.getTag();
+                        if (txtPost.getText() != null)
+                            txtPost.getText().insert(selectionStart, "[spoiler][attachment=" + attach.getId() + ":" + attach.getName() + "][/spoiler]");
                     }
                 });
 
@@ -964,8 +864,9 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
                         int selectionStart = txtPost.getSelectionStart();
                         if (selectionStart == -1)
                             selectionStart = 0;
-                        Attach attach = (Attach) view.getTag();
-                        txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getName() + "]");
+                        EditAttach attach = (EditAttach) view.getTag();
+                        if (txtPost.getText() != null)
+                            txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getName() + "]");
                     }
                 });
 
@@ -974,7 +875,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            Attach attach = this.getItem(position);
+            EditAttach attach = this.getItem(position);
             holder.btnDelete.setTag(attach);
             holder.btnSpoiler.setTag(attach);
             holder.txtFile.setText(attach.getName());
@@ -991,47 +892,12 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
         }
     }
 
-    private class Attach {
-        private String mId;
-        private String mName;
-
-        public Attach(String id, String name) {
-            mId = id;
-            mName = name;
-        }
-
-        public String getId() {
-            return mId;
-        }
-
-        public String getName() {
-            return mName;
-        }
-
-        @Override
-        public String toString() {
-            return mName;
-        }
-    }
-
-    private class Attaches extends ArrayList<Attach> {
-        public String getFileList() {
-            String res = "0";
-            for (Attach attach : this) {
-                res += "," + attach.getId();
-            }
-            return res;
-        }
-    }
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         if (!getSupportActionBar().isShowing()) {
             getSupportActionBar().show();
             m_BottomPanel.setVisibility(View.VISIBLE);
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
         return true;
     }
@@ -1058,20 +924,6 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
         txtPost.setSelection(startSearchSelection);
         txtPost.setCursorVisible(true);
         return raw;
-    }
-
-    private Boolean startSearch = false;
-
-    private Boolean getStartSearch() {
-        synchronized (startSearch) {
-            return startSearch;
-        }
-    }
-
-    private void setStartSearch(Boolean value) {
-        synchronized (startSearch) {
-            startSearch = value;
-        }
     }
 
     private Timer m_SearchTimer = null;
@@ -1156,8 +1008,6 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
         public void onCreate(Bundle saveInstance) {
             super.onCreate(saveInstance);
             setHasOptionsMenu(true);
-//            if (getResources().getBoolean(R.bool.screen_small))
-//                getInterface().getSupportActionBar().hide();
         }
 
         @Override
@@ -1179,7 +1029,6 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
 
             item = menu.add("Отправить").setIcon(R.drawable.ic_menu_send);
-            //item.setVisible(Client.getInstance().getLogined());
             item.setOnMenuItemClickListener(new com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(com.actionbarsherlock.view.MenuItem menuItem) {
                     return sendMail();
@@ -1238,8 +1087,6 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
             item.setOnMenuItemClickListener(new com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(com.actionbarsherlock.view.MenuItem menuItem) {
                     getInterface().hidePanels();
-//                    getInterface().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                    getInterface().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                     return true;
                 }
             });
