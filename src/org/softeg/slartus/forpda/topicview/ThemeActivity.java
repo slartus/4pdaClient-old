@@ -243,7 +243,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity {
                                                 break;
                                         }
                                     }
-                                })
+                                }
+                        )
                         .setPositiveButton("Применить", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -991,13 +992,15 @@ public class ThemeActivity extends BrowserViewsFragmentActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     result.confirm();
                                 }
-                            })
+                            }
+                    )
                     .setNegativeButton("Отмена",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     result.cancel();
                                 }
-                            })
+                            }
+                    )
                     .create()
                     .show();
 
@@ -1955,7 +1958,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity {
                 m_Url = strings[0];
 
                 String page = Client.getInstance().performGet(m_Url);
-                Matcher m = Pattern.compile("<textarea name=\"Post\".*?>([\\s\\S]*?)</textarea>").matcher(page);
+                Matcher m = Pattern.compile("<textarea name=\"post\"[^>]*>([\\s\\S]*?)</textarea>", Pattern.CASE_INSENSITIVE)
+                        .matcher(page);
                 if (m.find()) {
                     String quote = m.group(1);
                     if (quote != null)

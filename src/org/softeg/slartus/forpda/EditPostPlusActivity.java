@@ -107,7 +107,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
         intent.putExtra("forumId", forumId);
         intent.putExtra("themeId", topicId);
-        intent.putExtra("postId", "-1");
+        intent.putExtra("postId", PostApi.NEW_POST_ID);
         intent.putExtra("body", body);
         intent.putExtra("authKey", authKey);
         context.startActivity(intent);
@@ -119,8 +119,7 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
         intent.putExtra("forumId", forumId);
         intent.putExtra("themeId", topicId);
-        intent.putExtra("postId", "-1");
-        intent.putExtra("postId", "-1");
+        intent.putExtra("postId", PostApi.NEW_POST_ID);
         intent.putExtras(extras);
         intent.putExtra("authKey", authKey);
         context.startActivity(intent);
@@ -626,7 +625,8 @@ public class EditPostPlusActivity extends BaseFragmentActivity {
 
     private void setEditPost(EditPost editPost) {
         m_EditPost = editPost;
-        txtPost.setText(m_EditPost.getBody());
+        if (!PostApi.NEW_POST_ID.equals(m_EditPost.getId()))
+            txtPost.setText(m_EditPost.getBody());
         txtpost_edit_reason.setText(m_EditPost.getPostEditReason());
         refreshAttachmentsInfo();
     }

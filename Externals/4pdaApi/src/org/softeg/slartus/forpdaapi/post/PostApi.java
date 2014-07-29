@@ -46,10 +46,10 @@ public class PostApi {
     public static String getEditPage(IHttpClient httpClient, String forumId, String topicId, String postId, String authKey) throws IOException {
         String res;
         if (postId.equals(NEW_POST_ID))
-            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=zpost&do=reply_post&f=" + forumId
+            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=post&do=reply_post&f=" + forumId
                     + "&t=" + topicId);
         else
-            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=zpost&do=edit_post&f=" + forumId
+            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=post&do=edit_post&f=" + forumId
                     + "&t=" + topicId
                     + "&p=" + postId
                     + "&auth_key=" + authKey);

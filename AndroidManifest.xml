@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.softeg.slartus.forpda"
-    android:versionCode="394"
-    android:versionName="1.18"
+    android:versionCode="398"
+    android:versionName="1.19"
     android:installLocation="auto">
 
     <uses-sdk
         android:minSdkVersion="5"
         android:targetSdkVersion="19" />
 
-    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -156,11 +155,6 @@
             android:label="Помощь проекту"
             android:launchMode="singleTop" />
         <activity
-            android:name="org.softeg.slartus.forpda.prefs.DonateMarketActivity"
-            android:label="Donate через Google Play"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop" />
-        <activity
             android:name="org.softeg.slartus.forpda.search.SearchActivity"
             android:label="Поиск"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -278,16 +272,6 @@
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver" />
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.favorites.FavoritesAlarmReceiver" />
 
-
-        <service android:name="net.robotmedia.billing.BillingService" />
-
-        <receiver android:name="net.robotmedia.billing.BillingReceiver">
-            <intent-filter>
-                <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
-                <action android:name="com.android.vending.billing.RESPONSE_CODE" />
-                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
-            </intent-filter>
-        </receiver>
         <receiver android:name="org.softeg.slartus.forpda.qms_2_0.QmsNewMessagesReceiver">
             <intent-filter>
                 <action android:name="org.softeg.slartus.forpdanotifyservice.newqms" />
